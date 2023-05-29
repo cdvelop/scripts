@@ -3,46 +3,37 @@
 # Concatena los parámetros en una sola cadena
 commit_message="$*"
 
-# Colores
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-# Variable para realizar un seguimiento de los errores
-has_error=false
-
-# Función para mostrar un mensaje de error y marcar el seguimiento de errores como verdadero
+# Función para mostrar un mensaje de error
 print_error() {
-  echo -e "${RED}$1${NC}"
-  has_error=true
+  echo -e "\033[0;31mError: $1\n\033[0m" #color rojo
+  echo -e "\033[0;31m$2\n\033[0m" #color rojo
 }
 
 # Función para mostrar un mensaje de éxito
 print_success() {
-  echo -e "${GREEN}$1${NC}"
+  echo -e "\033[0;32m$1\033[0m" # color verde
 }
 
-# Función para realizar una acción y mostrar el mensaje de éxito o error correspondiente
+# Función para realizar una acción y mostrar un mensaje de error en caso de fallo
 perform_action() {
-  echo -e "${YELLOW}=> $1...${NC}"
-  eval "$2"
-  if [ $? -eq 0 ]; then
-    print_success "$3"
+ output=$(eval "$1" 2>&1)
+
+  if [ $? -ne 0 ]; then
+    print_error "$2" $output
+    exit 1
   else
-    print_error "$4"
+    print_success "$3"
   fi
 }
 
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  perform_action "Añadiendo cambios a Git" "git add ." "Cambios añadidos correctamente a Git." "Error al añadir cambios a Git."
-  perform_action "Creando nuevo commit" "git commit -m \"$commit_message\"" "Nuevo commit creado correctamente." "Error al crear el nuevo commit."
+  perform_action "git add ." "Error al añadir cambios a Git." "Cambios añadidos."
+  perform_action "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "Commit creado."
 
   # Obtén la última etiqueta
   latest_tag=$(git describe --abbrev=0 --tags)
-  echo -e "${YELLOW}=> Version Anterior: $latest_tag${NC}\n"
 
   if [ -z "$latest_tag" ]; then
     # Si no existe ninguna etiqueta, establece la etiqueta inicial en v0.0.1
@@ -58,19 +49,12 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  echo -e "${YELLOW}=> Commit: $commit_message\n${NC}"
-
-  perform_action "Creando nueva etiqueta: $new_tag" "git tag \"$new_tag\"" "Nueva etiqueta creada correctamente." "Error al crear la nueva etiqueta."
-  perform_action "Empujando cambios a remoto" "git push && git push origin \"$new_tag\"" "Cambios y nueva etiqueta $new_tag enviados a remoto." "Error al empujar los cambios y la nueva etiqueta a remoto."
+  perform_action "git tag $new_tag" "Error al crear la nueva etiqueta." "Nueva etiqueta agregada."
+  perform_action "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Cambios y nueva etiqueta $new_tag enviados a remoto."
 
 else
-  echo -e "${YELLOW}=> Mensaje commit vacío. Push no ejecutado.${NC}"
-  exit 1  # error
+  print_error "Mensaje commit vacío. Push no ejecutado."
+  exit 1
 fi
 
-# Mostrar un resumen de las acciones realizadas y verificar si hubo errores
-if [ "$has_error" = true ]; then
-  exit 1  # Establecer código de salida como 1 en caso de error
-else
-  exit 0  # Establecer código de salida como 0 en caso de éxito
-fi
+exit 0
