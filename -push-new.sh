@@ -61,6 +61,6 @@ else
 fi
 
 # Imprimir los mensajes acumulados en success_message
-print_success $success_message
+print_success "$success_message"
 
 exit 0
