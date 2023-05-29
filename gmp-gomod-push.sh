@@ -83,6 +83,20 @@ if [ -f "go.mod" ]; then
       echo -e "${YELLOW}=>commit: $commit_message push run paquete: $go_mod_name${NC}"
        # bash -push.sh $commit_message
     
+      bash -push.sh "$commit_message"
+      return_code=$?
+
+      # Verificar el código de salida
+      if [ $return_code -eq 0 ]; then
+        echo "El script -push.sh se ejecutó correctamente."
+        # Continuar con el código adicional aquí
+      else
+        echo "Error: El script -push.sh arrojó un error."
+        # Manejar el error o salir del script si es necesario
+    
+      fi
+
+
      #bash go-mod-update.sh $pkg_updated $new_tag 
     fi
 

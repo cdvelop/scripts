@@ -1,53 +1,37 @@
 #!/bin/bash
 
-# Colores
-COLOR_GREEN='\033[0;32m'
-COLOR_CYAN='\033[0;36m'
-COLOR_RESET='\033[0m'
+source funtions.sh
 
 # Obtén el nombre de la carpeta actual
-folder_name=$(basename "$(pwd)")
+current_folder=$(basename "$(pwd)")
 
 # Verifica si el directorio ya está inicializado con Git
 if [ -d ".git" ]; then
-    echo -e "${COLOR_CYAN}El directorio ya está inicializado con Git.${COLOR_RESET}"
+   warning "El directorio: $current_folder ya está inicializado con Git"
     exit 1
 fi
 
-echo "# $folder_name" >> README.md
+execute "echo '# $current_folder' >> README.md" 'al crear readme'
 
-# Verifica si existe el archivo go.mod
-if [ -f "go.mod" ]; then
-    echo -e "${COLOR_CYAN}El archivo go.mod ya existe en el directorio.${COLOR_RESET}"
-else
-    # Inicializa el módulo Go con el nombre del repositorio
-    go mod init "github.com/cdvelop/$folder_name"
-    echo -e "${COLOR_GREEN}Se ha inicializado el módulo Go con el nombre 'github.com/cdvelop/$folder_name'.${COLOR_RESET}"
-fi
+execute "git init" "git init" "repositorio git inicializado"
 
-# Inicializa el repositorio Git
-git init
+execute "git branch -M main" "branch"
 
-# Agrega todos los archivos al repositorio
-git add .
+execute "git add ." "al añadir cambios a Git."
 
-# Realiza el primer commit
-git commit -m "Primer commit"
+execute "git commit -m 'Primer commit'" 'commit'
 
-# estableser rama principal
-git branch -M main
+execute "git remote add origin https://$repository/$current_folder.git" "remote add origin" "repositorio remoto agregado"
 
-# Agrega el repositorio remoto en GitHub
-git remote add origin "https://github.com/cdvelop/$folder_name.git"
-
-# Envía los cambios al repositorio remoto
-git push -u origin main
+execute "git push -u origin main" "push"
 
 # Crea una etiqueta de versión
 tag_name="v0.0.1"
-git tag "$tag_name"
 
-# Envía la etiqueta al repositorio remoto
-git push origin "$tag_name"
+execute "git tag $tag_name" "etiqueta" "etiqueta creada: $tag_name"
 
-echo -e "${COLOR_GREEN}El proyecto ha sido configurado, el repositorio remoto ha sido agregado en GitHub y se ha creado la etiqueta de versión $tag_name.${COLOR_RESET}"
+execute "git push origin $tag_name" "push origin" "Proyecto git configurado, repositorio $current_folder agregado a GitHub"
+
+successMessages
+
+exit 0

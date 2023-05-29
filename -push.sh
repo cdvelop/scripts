@@ -1,10 +1,9 @@
 #!/bin/bash
 
-source funtion.sh
+source funtions.sh
 
 # Concatena los parámetros en una sola cadena
 commit_message="$*"
-
 
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
@@ -37,7 +36,7 @@ else
   exit 1
 fi
 
-# Imprimir los mensajes acumulados en success_message
-success "$success_message"
+# Imprimir los mensajes acumulados
+successMessages
 
 exit 0
