@@ -9,8 +9,8 @@ commit_message="$*"
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  execute "git add ." "Error al añadir cambios a Git." "-cambios añadidos."
-  execute "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "-commit: $commit_message"
+  execute "git add ." "Error al añadir cambios a Git." "-cambios añadidos"
+  execute "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "-commit"
 
   # Obtén la última etiqueta
   latest_tag=$(git describe --abbrev=0 --tags)
@@ -30,7 +30,7 @@ if [ -n "$commit_message" ]; then
   fi
 
   execute "git tag $new_tag" "Error al crear la nueva etiqueta." "-etiqueta $new_tag agregada"
-  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Commit y Push Ok."
+  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Commit y Push Ok..."
 
 else
   error "Mensaje commit vacío. Push no ejecutado."
