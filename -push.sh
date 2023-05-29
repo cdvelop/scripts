@@ -1,38 +1,19 @@
 #!/bin/bash
 
+source funtion.sh
+
 # Concatena los parámetros en una sola cadena
 commit_message="$*"
 
-# Colores
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-GREEN='\033[0;32m'
-NC='\033[0m'
 
-# commit_message no esta vacío.
+# commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  echo -e "${YELLOW}=> Añadiendo cambios a Git...${NC}"
-  git add .
-  if [ $? -eq 0 ]; then
-    echo -e "${GREEN}=> Cambios añadidos correctamente a Git.${NC}"
-  else
-    echo -e "${RED}=> Error al añadir cambios a Git.${NC}"
-    exit 1
-  fi
-
-  echo -e "${YELLOW}=> Creando nuevo commit...${NC}"
-  git commit -m "$commit_message"
-  if [ $? -eq 0 ]; then
-    echo -e "${GREEN}=> Nuevo commit creado correctamente.${NC}"
-  else
-    echo -e "${RED}=> Error al crear el nuevo commit.${NC}"
-    exit 1
-  fi
+  execute "git add ." "Error al añadir cambios a Git." "-cambios añadidos."
+  execute "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "-commit: $commit_message"
 
   # Obtén la última etiqueta
   latest_tag=$(git describe --abbrev=0 --tags)
-  echo -e "${YELLOW}=> Version Anterior: $latest_tag${NC}\n"
 
   if [ -z "$latest_tag" ]; then
     # Si no existe ninguna etiqueta, establece la etiqueta inicial en v0.0.1
@@ -48,30 +29,15 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  echo -e "${YELLOW}=> Commit: $commit_message\n${NC}"
+  execute "git tag $new_tag" "Error al crear la nueva etiqueta." "-etiqueta $new_tag agregada"
+  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Commit y Push Ok."
 
-
-  # Crear una nueva etiqueta con la versión proporcionada.
-  echo -e "${YELLOW}=> Creando nueva etiqueta: $new_tag...${NC}"
-  git tag "$new_tag"
-  if [ $? -eq 0 ]; then
-    echo -e "${GREEN}=> Nueva etiqueta creada correctamente.${NC}"
-  else
-    echo -e "${RED}=> Error al crear la nueva etiqueta.${NC}"
-    exit 1
-  fi
-
-  # Empujar los cambios y la nueva etiqueta a remoto.
-  echo -e "${YELLOW}=> Empujando cambios a remoto...${NC}"
-  git push && git push origin "$new_tag"
-  if [ $? -eq 0 ]; then
-    echo -e "${GREEN}=> Cambios y nueva etiqueta $new_tag enviados a remoto.${NC}"
-  else
-    echo -e "${RED}=> Error al empujar los cambios y la nueva etiqueta a remoto.${NC}"
-    exit 1
-  fi
-
-
- else
-  echo -e "${YELLOW}=> Mensaje commit vacio. Push no ejecutado.${NC}"
+else
+  error "Mensaje commit vacío. Push no ejecutado."
+  exit 1
 fi
+
+# Imprimir los mensajes acumulados en success_message
+success "$success_message"
+
+exit 0
