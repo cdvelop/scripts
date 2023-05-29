@@ -3,6 +3,9 @@
 # Concatena los parámetros en una sola cadena
 commit_message="$*"
 
+# Variable para almacenar los mensajes de éxito
+success_message=""
+
 # Función para mostrar un mensaje de error
 print_error() {
   echo -e "\033[0;31mError: $1\n\033[0m" #color rojo
@@ -22,7 +25,7 @@ perform_action() {
     print_error "$2" $output
     exit 1
   else
-    print_success "$3"
+    success_message+=" $3"  # Concatenar el mensaje de éxito a la variable success_message
   fi
 }
 
@@ -49,12 +52,15 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  perform_action "git tag $new_tag" "Error al crear la nueva etiqueta." "Nueva etiqueta agregada."
-  perform_action "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Cambios y nueva etiqueta $new_tag enviados a remoto."
+  perform_action "git tag $new_tag" "Error al crear la nueva etiqueta." "Etiqueta agregada."
+  perform_action "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Cambios y etiqueta $new_tag enviados a remoto."
 
 else
   print_error "Mensaje commit vacío. Push no ejecutado."
   exit 1
 fi
+
+# Imprimir los mensajes acumulados en success_message
+print_success "$success_message"
 
 exit 0
