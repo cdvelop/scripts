@@ -29,7 +29,7 @@ if [ -n "$commit_message" ]; then
   fi
 
   execute "git tag $new_tag" "Error al crear la nueva etiqueta." "-etiqueta $new_tag agregada"
-  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Commit y Push Ok..."
+  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "-Commit y Push Ok..."
 
 else
   error "Mensaje commit vacío. Push no ejecutado."
