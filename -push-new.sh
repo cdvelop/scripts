@@ -32,8 +32,8 @@ perform_action() {
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  perform_action "git add ." "Error al añadir cambios a Git." "Cambios añadidos."
-  perform_action "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "Commit creado."
+  perform_action "git add ." "Error al añadir cambios a Git." "-cambios añadidos."
+  perform_action "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "-commit: $commit_message"
 
   # Obtén la última etiqueta
   latest_tag=$(git describe --abbrev=0 --tags)
@@ -52,8 +52,8 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  perform_action "git tag $new_tag" "Error al crear la nueva etiqueta." "Etiqueta agregada."
-  perform_action "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Cambios y etiqueta $new_tag enviados a remoto."
+  perform_action "git tag $new_tag" "Error al crear la nueva etiqueta." "-etiqueta $new_tag agregada"
+  perform_action "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "Commit y Push Ok."
 
 else
   print_error "Mensaje commit vacío. Push no ejecutado."
@@ -61,6 +61,6 @@ else
 fi
 
 # Imprimir los mensajes acumulados en success_message
-print_success "$success_message"
+print_success $success_message
 
 exit 0
