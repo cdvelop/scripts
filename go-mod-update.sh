@@ -45,9 +45,10 @@ if [ -d $go_pkgs ]; then
 
                 execute "go get $repository/$pkg_updated@$new_tag" "no se actualizo paquete $pkg_updated en $observed_pkg_name" "paquete $pkg_updated actualizado en $observed_pkg_name ok"
 
-                bash go-push.sh "update $pkg_updated" 
+                execute "go mod tidy" "go mod tidy en $observed_pkg_name ha fallado" "go mod tidy ok"
 
                 successMessages
+
               cd "$current_dir"
             fi
         fi
