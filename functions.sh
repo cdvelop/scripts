@@ -1,4 +1,4 @@
-
+# repositorio
 repository="github.com/cdvelop"
 
 # Variable para almacenar los mensajes de éxito
@@ -38,4 +38,5 @@ execute() {
 # Imprimir los mensajes acumulados
 successMessages(){
   echo -e "$message"
+  mensaje=""
 }

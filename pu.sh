@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source funtions.sh
+source functions.sh
+
+# este script genera una etiqueta con un numero correlativo cambiando solo el ultimo
+# dígito del tag ej v5.4.2 el siguiente sera v5.4.3 
 
 # Concatena los parámetros en una sola cadena
 commit_message="$*"

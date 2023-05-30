@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source funtions.sh
+source functions.sh
 
 # Obtén el nombre de la carpeta actual
 current_folder=$(basename "$(pwd)")

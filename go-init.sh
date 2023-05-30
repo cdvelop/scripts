@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source funtions.sh
+source functions.sh
 
 # obtener el nombre de la carepta actual
 current_folder=$(basename "$(pwd)")
