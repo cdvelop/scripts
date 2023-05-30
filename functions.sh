@@ -40,3 +40,18 @@ successMessages(){
   echo -e "$message"
   mensaje=""
 }
+
+
+backup() {
+  case "$OSTYPE" in
+    msys*|mingw*)
+      # utiliza FreeFileSync para realizar backup
+      warning "backup iniciado...."
+      "/c/Program Files/FreeFileSync/FreeFileSync.exe" "/c/Users/$(whoami)/SyncWin/SyncSettings.ffs_batch" &
+      # Al agregar & al final del comando, se ejecutará en segundo plano y liberará el terminal.
+      ;;
+    *)
+      error "Este sistema operativo '$OSTYPE' no es compatible con la función de respaldo."
+      ;;
+  esac
+}
