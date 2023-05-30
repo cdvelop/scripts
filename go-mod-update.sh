@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source functions.sh
+
 # Verificar si se proporcionaron dos parámetros
 if [ "$#" -ne 2 ]; then
   error "Se requieren nombre paquete y version ej: mipkg v0.0.2"
@@ -18,6 +20,7 @@ go_pkgs="/c/Users/$username/Packages/go"
 
 if [ -d $go_pkgs ]; then
 
+
     for observed_pkg in "$go_pkgs"/*; do
       # Verificar que el paquete no sea el actualizado recientemente
       if [ "$(basename "$observed_pkg")" != "$pkg_updated" ]; then
@@ -28,7 +31,7 @@ if [ -d $go_pkgs ]; then
           # Obtener el nombre del paquete observado
           observed_pkg_name=$(gawk -v pattern=$repository/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' $go_mod_file)
             
-            old_tag=$(gawk -v package="$pkg_updated" -v common="$repository" 'match($0, "^require[[:space:]]+" common "/" package "[[:space:]]+([^[:space:]]+)", tag) {print tag[1]; exit} $1==common "/" package {print $2}' "$go_mod_file")
+          old_tag=$(gawk -v package="$pkg_updated" -v common="$repository" 'match($0, "^require[[:space:]]+" common "/" package "[[:space:]]+([^[:space:]]+)", tag) {print tag[1]; exit} $1==common "/" package {print $2}' "$go_mod_file")
 
             # Verificar si la variable old_tag está vacía
          if [ -z "$old_tag" ]; then
@@ -42,8 +45,9 @@ if [ -d $go_pkgs ]; then
 
                 execute "go get $repository/$pkg_updated@$new_tag" "no se actualizo paquete $pkg_updated en $observed_pkg_name" "paquete $pkg_updated actualizado en $observed_pkg_name ok"
 
-                bash -go-push.sh "update $pkg_updated" 
+                bash go-push.sh "update $pkg_updated" 
 
+                successMessages
               cd "$current_dir"
             fi
         fi
@@ -51,3 +55,4 @@ if [ -d $go_pkgs ]; then
     done
 
 fi
+
