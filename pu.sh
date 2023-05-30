@@ -5,14 +5,16 @@ source functions.sh
 # este script genera una etiqueta con un numero correlativo cambiando solo el ultimo
 # dígito del tag ej v5.4.2 el siguiente sera v5.4.3 
 
+current_folder=$(basename "$(pwd)")
+
 # Concatena los parámetros en una sola cadena
 commit_message="$*"
 
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  execute "git add ." "Error al añadir cambios a Git." "-cambios añadidos"
-  execute "git commit -m \"$commit_message\"" "Error al crear el nuevo commit." "-commit"
+  execute "git add ." "Error al añadir cambios a Git $current_folder." "-cambios $current_folder añadidos"
+  execute "git commit -m '$commit_message'" "al crear el nuevo commit $current_folder."
 
   # Obtén la última etiqueta
   latest_tag=$(git describe --abbrev=0 --tags)
@@ -31,11 +33,11 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  execute "git tag $new_tag" "Error al crear la nueva etiqueta." "-etiqueta $new_tag agregada"
-  execute "git push && git push origin $new_tag" "Error al empujar los cambios y la nueva etiqueta a remoto." "-Commit y Push Ok..."
+  execute "git tag $new_tag" "al crear la nueva etiqueta $current_folder." "-nueva etiqueta $new_tag"
+  execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "-Commit y Push $current_folder Ok..."
 
 else
-  error "Mensaje commit vacío. Push no ejecutado."
+  error "Mensaje commit vacío. Push $current_folder no ejecutado."
   exit 1
 fi
 
