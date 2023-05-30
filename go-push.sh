@@ -28,6 +28,8 @@ if [ -f "go.mod" ]; then
   if [[ $race_output == *"WARNING: DATA RACE"* ]]; then
     warning "$race_output"
   fi
+  
+  successMessages
     
   bash pu.sh "$commit_message"
   if [ $? -eq 0 ]; then # Verificar el código de salida
@@ -38,5 +40,3 @@ if [ -f "go.mod" ]; then
   fi
 
 fi
-
-successMessages
