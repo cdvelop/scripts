@@ -13,7 +13,7 @@ commit_message="$*"
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
 
-  execute "git add ." "Error al añadir cambios a Git $current_folder." "-cambios $current_folder añadidos"
+  execute "git add ." "Error al añadir cambios a Git $current_folder." "cambios $current_folder añadidos"
   execute "git commit -m '$commit_message'" "al crear el nuevo commit $current_folder."
 
   # Obtén la última etiqueta
@@ -33,8 +33,8 @@ if [ -n "$commit_message" ]; then
     new_tag=$(echo "$latest_tag" | sed "s/$last_number$/$next_number/")
   fi
 
-  execute "git tag $new_tag" "al crear la nueva etiqueta $current_folder." "-nueva etiqueta $new_tag"
-  execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "-Commit y Push $current_folder Ok..."
+  execute "git tag $new_tag" "al crear la nueva etiqueta $current_folder." "nueva etiqueta $new_tag"
+  execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "Commit y Push $current_folder Ok..."
 
 else
   error "Mensaje commit vacío. Push $current_folder no ejecutado."
