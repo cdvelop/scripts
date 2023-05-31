@@ -20,7 +20,6 @@ go_pkgs="/c/Users/$username/Packages/go"
 
 if [ -d $go_pkgs ]; then
 
-
     for observed_pkg in "$go_pkgs"/*; do
       # Verificar que el paquete no sea el actualizado recientemente
       if [ "$(basename "$observed_pkg")" != "$pkg_updated" ]; then
@@ -33,7 +32,7 @@ if [ -d $go_pkgs ]; then
             
           old_tag=$(gawk -v package="$pkg_updated" -v common="$repository" 'match($0, "^require[[:space:]]+" common "/" package "[[:space:]]+([^[:space:]]+)", tag) {print tag[1]; exit} $1==common "/" package {print $2}' "$go_mod_file")
 
-            # Verificar si la variable old_tag está vacía
+            # Verificar si la variable old_tag no está vacía
          if [ -z "$old_tag" ]; then
             continue
             fi
@@ -44,10 +43,14 @@ if [ -d $go_pkgs ]; then
               cd "$observed_pkg"
 
                 execute "go get $repository/$pkg_updated@$new_tag" "no se actualizo paquete $pkg_updated en $observed_pkg_name" "paquete $pkg_updated actualizado en $observed_pkg_name ok"
-
-                execute "go mod tidy" "go mod tidy en $observed_pkg_name ha fallado" "go mod tidy ok"
-
                 successMessages
+
+                bash go.mod.check.sh
+                if [ $? -eq 0 ]; then # Verificar si es 0 subimos los cambios
+
+                  bash pu.sh "update module: $pkg_updated"
+
+                fi
 
               cd "$current_dir"
             fi
@@ -57,3 +60,4 @@ if [ -d $go_pkgs ]; then
 
 fi
 
+exit 0

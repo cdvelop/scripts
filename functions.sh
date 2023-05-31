@@ -28,7 +28,7 @@ execute() {
   else
     # Concatenar el mensaje de éxito a la variable message si es enviada
     if [ -n "$3" ]; then
-      symbol="\033[0;33m▶\033[0m"  # Símbolo naranja: ▶
+      symbol="\033[0;33m=>\033[0m"  # Símbolo naranja
       text="\033[0;32m$3\033[0m"  # Texto verde
       message+="\n$symbol $text"  # Concatenar el mensaje de éxito con el símbolo y el texto
     fi
