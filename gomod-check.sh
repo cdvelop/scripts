@@ -27,7 +27,6 @@ if [ -f "go.mod" ]; then
   fi
   
   successMessages
-    
   exit 0
 fi
 
