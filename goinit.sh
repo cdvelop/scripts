@@ -12,4 +12,4 @@ if [ ! -f "go.mod" ]; then
 
 fi
 
-bash -init.sh
+bash init.sh
