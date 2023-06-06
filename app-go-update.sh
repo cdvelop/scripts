@@ -39,7 +39,7 @@ while IFS= read -r line; do
 
             if [ "$latest_tag" != "$current_tag" ]; then
                 # "El paquete tiene una versión diferente hay que actualizar"
-                bash go-get.sh $package_name $latest_tag
+                bash goget.sh $package_name $latest_tag
  
             fi
         fi
