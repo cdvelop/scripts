@@ -6,13 +6,13 @@ source functions.sh
 
 current_folder=$(basename "$(pwd)")
 
+# Concatena los parámetros en una sola cadena
+commit_message="$*"
+
 # Comprueba si el archivo "changes.txt" existe
-if [ -f "changes.txt" ]; then
+if [ -f "changes.txt" ] && [ -s "changes.txt" ]; then
     # Lee el contenido del archivo
     commit_message=$(cat changes.txt)   
-else
-    # Concatena los parámetros en una sola cadena
-    commit_message="$*"
 fi
 
 # commit_message no está vacío.
