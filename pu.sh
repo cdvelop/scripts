@@ -11,8 +11,14 @@ commit_message="$*"
 
 # Comprueba si el archivo "changes.txt" existe
 if [ -f "changes.txt" ] && [ -s "changes.txt" ]; then
-    # Lee el contenido del archivo
-    commit_message=$(cat changes.txt)   
+        # Lee el contenido del archivo
+    changes_content=$(cat changes.txt)
+    if [ -n "$commit_message" ]; then
+        # Concatena los contenidos del archivo y los parámetros
+        commit_message="$commit_message $changes_content"
+    else
+        commit_message=$changes_content
+    fi   
 fi
 
 # commit_message no está vacío.
