@@ -42,3 +42,10 @@ successMessages(){
 }
 
 
+# Función para comprobar si el archivo "changes.txt" existe y eliminar su contenido
+function deleteChangesFileContent() {
+    if [ -f "changes.txt" ]; then
+        # Elimina el contenido del archivo
+        echo "" > changes.txt
+    fi
+}

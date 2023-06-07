@@ -1,5 +1,4 @@
 #!/bin/bash
-
 source functions.sh
 
 # este script genera una etiqueta con un numero correlativo cambiando solo el ultimo
@@ -7,8 +6,14 @@ source functions.sh
 
 current_folder=$(basename "$(pwd)")
 
-# Concatena los parámetros en una sola cadena
-commit_message="$*"
+# Comprueba si el archivo "changes.txt" existe
+if [ -f "changes.txt" ]; then
+    # Lee el contenido del archivo
+    commit_message=$(cat changes.txt)   
+else
+    # Concatena los parámetros en una sola cadena
+    commit_message="$*"
+fi
 
 # commit_message no está vacío.
 if [ -n "$commit_message" ]; then
@@ -43,4 +48,5 @@ fi
 
 # Imprimir los mensajes acumulados
 successMessages
+deleteChangesFileContent
 exit 0
