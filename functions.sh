@@ -28,10 +28,24 @@ execute() {
   else
     # Concatenar el mensaje de éxito a la variable message si es enviada
     if [ -n "$3" ]; then
-      symbol="\033[0;33m=>\033[0m"  # Símbolo naranja
-      text="\033[0;32m$3\033[0m"  # Texto verde
-      message+="\n$symbol $text"  # Concatenar el mensaje de éxito con el símbolo y el texto
+      addOKmessage "$3"
     fi
+  fi
+}
+
+addOKmessage(){
+  if [ -n "$1" ]; then
+      symbol="\033[0;33m=>ok\033[0m"  # Símbolo naranja
+      text="\033[0;32m$1\033[0m"  # Texto verde
+      message+="\n$symbol $text"  # Concatenar el mensaje de éxito con el símbolo y el texto
+  fi
+}
+
+addERRORmessage(){
+  if [ -n "$1" ]; then
+      symbol="\033[0;31m=err\033[0m"  # Símbolo Rojo
+      text="\033[0;31m$1\033[0m"  # Texto Rojo
+      message+="\n$symbol $text"
   fi
 }
 

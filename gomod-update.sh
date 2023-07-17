@@ -44,12 +44,18 @@ if [ -d $go_pkgs ]; then
               current_dir=$(pwd)
               cd "$observed_pkg"
                 
-                execute "go get $repository/$pkg_updated@$new_tag" "no se actualizo paquete $pkg_updated en $observed_pkg_name" "paquete $pkg_updated actualizado en $observed_pkg_name ok"
+                execute "go get $repository/$pkg_updated@$new_tag" "no se actualizo paquete $pkg_updated en $observed_pkg_name" 
                 
                 bash gomod-check.sh
                 if [ $? -eq 0 ]; then # Verificar si es 0 subimos los cambios
 
-                  bash pu.sh "update module: $pkg_updated"
+                    bash pu.sh "update module: $pkg_updated"
+
+                    addOKmessage "paquete $pkg_updated actualizado en $observed_pkg_name"
+
+                  else
+
+                    addERRORmessage "tests en paquete: $observed_pkg_name después de actualizar $pkg_updated genera error"
 
                 fi
 
