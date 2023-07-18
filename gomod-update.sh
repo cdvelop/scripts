@@ -55,7 +55,7 @@ if [ -d $go_pkgs ]; then
 
                   else
 
-                    addERRORmessage "tests en paquete: $observed_pkg_name después de actualizar $pkg_updated genera error"
+                    addERRORmessage "tests en paquete: $observed_pkg_name después de actualizar: [$pkg_updated]"
 
                 fi
 
