@@ -45,7 +45,7 @@ if [ -n "$commit_message" ]; then
   fi
 
   execute "git tag $new_tag" "al crear la nueva etiqueta $current_folder." "nueva etiqueta $new_tag"
-  execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "Commit y Push $current_folder Ok..."
+  execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "Commit y Push $current_folder..."
 
 else
   error "Mensaje commit vacío. Push $current_folder no ejecutado."
