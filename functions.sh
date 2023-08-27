@@ -4,10 +4,6 @@ repository="github.com/cdvelop"
 # Variable para almacenar los mensajes de éxito
 message=""
 
-# Función para mostrar un mensaje de error
-error() {
-  echo -e "\033[0;31mError: $1 $2\033[0m" #color rojo
-}
 
 # Función para mostrar un mensaje de éxito
 success() {
@@ -18,8 +14,35 @@ warning() {
   echo -e "\033[0;33m$1\033[0m" # color amarillo
 }
 
+# Función para mostrar un mensaje de error
+error() {
+  echo -e "\033[0;31mError: $1 $2\033[0m" #color rojo
+}
+# Variable global para almacenar el código de salida
+# exit_code=0
 # Función para realizar una acción y mostrar un mensaje de error en caso de fallo
 execute() {
+ output=$(eval "$1" 2>&1)
+ local exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+    error "$2" "$output"
+
+    if [ -z "$4" ]; then
+      # warning "cuarto parámetro [no exist] no enviado."
+      exit 1
+    fi
+
+  else
+    # Concatenar el mensaje de éxito a la variable message si es enviada
+    if [ -n "$3" ]; then
+      addOKmessage "$3"
+    fi
+  fi
+  return $exit_code
+}
+
+
+executeOLD() {
  output=$(eval "$1" 2>&1)
 
   if [ $? -ne 0 ]; then
