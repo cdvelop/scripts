@@ -5,13 +5,15 @@ source functions.sh
 # Obtén el nombre de la carpeta actual
 current_folder=$(basename "$(pwd)")
 
+execute "echo '' >> changes.txt" 'al crear archivo changes.txt'
+
 # Verifica si el directorio ya está inicializado con Git
 if [ -d ".git" ]; then
    warning "El directorio: $current_folder ya está inicializado con Git"
     exit 1
 fi
 
-execute "echo '# $current_folder' >> README.md" 'al crear readme'
+execute "echo '# $current_folder' >> README.md" 'al crear archivo readme'
 
 execute "git init" "git init" "repositorio git inicializado"
 
