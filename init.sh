@@ -5,7 +5,7 @@ source functions.sh
 # Obtén el nombre de la carpeta actual
 current_folder=$(basename "$(pwd)")
 
-execute "echo '' >> changes.txt" 'al crear archivo changes.txt'
+execute "echo 'init code' >> changes.txt" 'al crear archivo changes.txt'
 
 # Verifica si el directorio ya está inicializado con Git
 if [ -d ".git" ]; then
