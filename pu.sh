@@ -21,8 +21,11 @@ if [ -f "changes.txt" ] && [ -s "changes.txt" ]; then
     fi   
 fi
 
-# commit_message no está vacío.
-if [ -n "$commit_message" ]; then
+# Si commit_message está vacío, asigna un valor predeterminado
+if [ -z "$commit_message" ]; then
+    commit_message="auto update package"
+fi
+
 
   execute "git add ." "Error al añadir cambios a Git $current_folder." "cambios $current_folder añadidos"
   execute "git commit -m '$commit_message'" "al crear el nuevo commit $current_folder."
@@ -47,10 +50,7 @@ if [ -n "$commit_message" ]; then
   execute "git tag $new_tag" "al crear la nueva etiqueta $current_folder." "nueva etiqueta $new_tag"
   execute "git push && git push origin $new_tag" "al empujar los cambios y la nueva etiqueta a remoto $current_folder." "Commit y Push $current_folder..."
 
-else
-  error "Mensaje commit vacío. Push $current_folder no ejecutado."
-  exit 1
-fi
+
 
 # Imprimir los mensajes acumulados
 successMessages
