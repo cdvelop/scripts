@@ -17,7 +17,7 @@ fi
 # Convertir la primera letra en mayúscula
 struct="${current_folder^}"
 
-func="func Add() (n *$struct, err string) {\n\nn := $struct{}\n\n return &n,nil\n}"
+func="func Add() (x *$struct, err string) {\n\nx = &$struct{}\n\n return x,""\n}"
 
 execute "echo -e 'package $current_folder\n\n$func' >> add.go" 'al crear fichero add.go'
 
