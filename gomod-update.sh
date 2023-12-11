@@ -14,7 +14,6 @@ pkg_was_updated=$1
 pkg_tag_was_update=$2
 
 
-
 if [ -d $go_pkgs ]; then
    
     for observed_pkg in "$go_pkgs"/*; do
