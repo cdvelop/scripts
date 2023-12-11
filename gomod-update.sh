@@ -13,10 +13,7 @@ pkg_was_updated=$1
 # version nueva
 pkg_tag_was_update=$2
 
-# directorio usuario
-username=$(whoami)
-# Buscar y actualizar paquetes en el directorio "\Packages\go"
-go_pkgs="/c/Users/$username/Packages/go"
+
 
 if [ -d $go_pkgs ]; then
    

@@ -4,6 +4,11 @@ repository="github.com/cdvelop"
 # Variable para almacenar los mensajes de éxito
 message=""
 
+# directorio usuario
+username=$(whoami)
+# Buscar y actualizar paquetes en el directorio "\Packages\go"
+go_pkgs="/c/Users/$username/Packages/go"
+
 
 # Función para mostrar un mensaje de éxito
 success() {
