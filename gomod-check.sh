@@ -16,21 +16,31 @@ if [ -f "go.mod" ]; then
   syscall $go_mod_name
   syscall_found=$?
 
-  if [ $syscall_found -eq 0 ]; then
 
-    execute "go vet" "go vet en $go_mod_name ha fallado" "go vet $go_mod_name ok"
- 
-    execute "go test" "Hubo errores en las pruebas en $go_mod_name" "root test $go_mod_name ok"
+if [ $syscall_found -eq 0 ]; then
+  go_vet_dir=""
+    # success "directorio $go_mod_name"
+    if [ -d "cmd" ]; then
+    # success "$go_mod_name contiene carpeta cmd"
+        go_vet_dir=" ./cmd"
+    fi
+
+    execute "go vet$go_vet_dir" "go vet en  $go_mod_name $go_vet_dir ha fallado" "go vet $go_mod_name $go_vet_dir ok"
+
+    if [ -n "$(find . -type f -name "*_test.go")" ]; then
+        execute "go test" "Hubo errores en las pruebas en $go_mod_name" "root test $go_mod_name ok"
+    fi
 
     # Buscar carpetas que contengan nombre test y ejecutar tests
     test_folders=$(find -type d -name "*test*")
     for folder in $test_folders; do
-      if [ -n "$(find $folder -type f -name "*_test.go")" ]; then
-        execute "go test $folder" "Hubo errores en las pruebas carpeta $folder en $go_mod_name" "$go_mod_name carpeta: $folder test ok"
-      fi   
+        if [ -n "$(find $folder -type f -name "*_test.go")" ]; then
+            execute "go test $folder" "Hubo errores en las pruebas carpeta $folder en $go_mod_name" "$go_mod_name carpeta: $folder test ok"
+        fi
     done
 
-  fi
+fi
+
   
   # Ejecutar prueba de carrera de datos con go run
   race_output=$(go run -race "$go_mod_name" 2>&1)
