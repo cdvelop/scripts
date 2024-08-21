@@ -15,6 +15,7 @@ success() {
   echo -e "\033[0;32m$1\033[0m" # color verde
 }
 
+# Función para mostrar un mensaje de advertencia
 warning() {
   echo -e "\033[0;33m$1\033[0m" # color amarillo
 }
