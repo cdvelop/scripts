@@ -22,10 +22,13 @@ if [ $syscall_found -eq 0 ]; then
     # success "directorio $go_mod_name"
     if [ -d "cmd" ]; then
     # success "$go_mod_name contiene carpeta cmd"
-        go_vet_dir=" ./cmd"
-    fi
 
-    execute "go vet$go_vet_dir" "go vet en  $go_mod_name $go_vet_dir ha fallado" "go vet $go_mod_name $go_vet_dir ok"
+    if [ -d "cmd/$go_mod_name" ]; then
+        go_vet_dir="./cmd/$go_mod_name"
+    else
+        go_vet_dir="./cmd"
+    fi
+    execute "go vet $go_vet_dir" "go vet en $go_mod_name $go_vet_dir ha fallado" "go vet $go_mod_name $go_vet_dir ok"
 
     if [ -n "$(find . -type f -name "*_test.go")" ]; then
         execute "go test" "Hubo errores en las pruebas en $go_mod_name" "root test $go_mod_name ok"
@@ -39,8 +42,8 @@ if [ $syscall_found -eq 0 ]; then
         fi
     done
 
+  fi
 fi
-
   
   # Ejecutar prueba de carrera de datos con go run
   race_output=$(go run -race "$go_mod_name" 2>&1)

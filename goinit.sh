@@ -14,16 +14,17 @@ fi
 
 # crear archivos básicos go
 
+struct="handler"
 # Convertir la primera letra en mayúscula
-struct="${current_folder^}"
+# struct="${current_folder^}"
 
 # Almacenar la primera letra en minúscula de struct en la variable x
 x=$(echo "$current_folder" | cut -c1)
 
-func="func Add() ($x *$struct) {\n\n$x = &$struct{}\n\n return $x\n}"
+func="func New() (*$struct) {\n\nh := &$struct{}\n\n return h\n}"
 
 
-execute "echo -e 'package $current_folder\n\n  $func' >> add.go" 'al crear fichero add.go'
+execute "echo -e 'package $current_folder\n\n$func' >> new.go" 'al crear fichero new.go'
 
 model="type $struct struct {}"
 
