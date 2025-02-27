@@ -1,5 +1,5 @@
 # repositorio
-repository="github.com/cdvelop"
+repository=$(git config --get remote.origin.url | sed -E 's#(git@|https://)([^:/]+)[/:]([^/]+)/.*#\2/\3#')
 
 # Variable para almacenar los mensajes de éxito
 message=""

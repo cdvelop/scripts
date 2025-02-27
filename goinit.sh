@@ -5,30 +5,18 @@ source functions.sh
 # obtener el nombre de la carpeta actual
 current_folder=$(basename "$(pwd)")
 
-
 if [ ! -f "go.mod" ]; then
-
- execute "go mod init $repository/$current_folder" "no se inicializo go mod" "-go mod iniciado"
-
+ execute "go mod init $repository/$current_folder" "no se inicializó go mod" "-go mod iniciado"
 fi
 
-# crear archivos básicos go
-
+# crear archivo go único new.go
 struct="handler"
-# Convertir la primera letra en mayúscula
-# struct="${current_folder^}"
 
-# Almacenar la primera letra en minúscula de struct en la variable x
-x=$(echo "$current_folder" | cut -c1)
-
+# Definir la estructura y la función
+model="type $struct struct {}"
 func="func New() (*$struct) {\n\nh := &$struct{}\n\n return h\n}"
 
-
-execute "echo -e 'package $current_folder\n\n$func' >> new.go" 'al crear fichero new.go'
-
-model="type $struct struct {}"
-
-execute "echo -e 'package $current_folder\n\n$model' >> model.go" 'al crear fichero model.go'
-
+# Crea o sobrescribe new.go con el contenido completo
+execute "echo -e 'package $current_folder\n\n$model\n\n$func' > new.go" 'al crear fichero new.go'
 
 bash init.sh
