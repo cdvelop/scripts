@@ -6,7 +6,7 @@ source syscall.sh
 
 if [ -f "go.mod" ]; then
   #obtenemos el nombre del modulo go
-  go_mod_name=$(gawk -v pattern=$repository/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' go.mod)
+  go_mod_name=$(gawk -v pattern=$currentGitHostUserPath/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' go.mod)
   
   # actualizar los paquetes actuales
   execute "go get -u all" "no se pudieron actualizar los paquetes en $go_mod_name" 

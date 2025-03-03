@@ -1,35 +1,46 @@
 #!/bin/bash
 
-source ./functions.sh
+source functions.sh
 
-init_readme_file() {
+# Create README.md file
+create_readme() {
     local current_folder=$1
 
-    execute "echo '# $current_folder' >> README.md" \
+    execute "echo '# $current_folder' > README.md" \
         "Failed to create README.md" \
         "README.md created" || return $?
 
     return 0
 }
 
-init_change_txt_file() {
-    local current_folder=$1
-
-    execute "echo 'init code' >> changes.txt" \
+# Create changes.txt file
+create_changes_file() {
+    execute "echo 'init code' > changes.txt" \
         "Failed to create changes.txt" \
         "changes.txt created" || return $?
 
     return 0
 }
 
-init_git_repo() {
+# Initialize files for new repository
+init_base_files() {
+    local current_folder=$1
+
+    create_readme "$current_folder" || return $?
+    create_changes_file || return $?
+
+    return 0
+}
+
+# Initialize new git repository
+init_new_repo() {
     local current_folder=$1
     local remote_url=$2
 
     if [ -d ".git" ]; then
         warning "Directory already initialized with Git: $current_folder"
         return 1
-    }
+    fi
 
     execute "git init" \
         "Failed to initialize git" \
@@ -41,17 +52,7 @@ init_git_repo() {
     return 0
 }
 
-create_initial_commit() {
-    execute "git add ." \
-        "Failed to stage files" || return $?
-
-    execute "git commit -m 'Initial commit'" \
-        "Failed to commit" \
-        "Files committed" || return $?
-
-    return 0
-}
-
+# Configure remote for existing or new repository
 setup_git_remote() {
     local current_folder=$1
     local remote_url=$2
@@ -60,6 +61,11 @@ setup_git_remote() {
         "Failed to add remote" \
         "Remote added successfully" || return $?
 
+    return 0
+}
+
+# Push changes to remote
+push_to_remote() {
     execute "git push -u origin main" \
         "Failed to push to remote" \
         "Pushed to remote" || return $?
@@ -67,6 +73,7 @@ setup_git_remote() {
     return 0
 }
 
+# Create and push a tag
 create_git_tag() {
     local tag_name=${1:-"v0.0.1"}
 
@@ -81,24 +88,14 @@ create_git_tag() {
     return 0
 }
 
-# Main function that orchestrates the whole process
-setup_git_project() {
-    local current_folder=$(basename "$(pwd)")
+# Create initial commit
+create_initial_commit() {
+    execute "git add ." \
+        "Failed to stage files" || return $?
 
-    init_readme_file "$current_folder" || return $?
-    init_change_txt_file "$current_folder" || return $?
-    init_git_repo "$current_folder" "$currentGitHostUserPath" || return $?
-    create_initial_commit || return $?
-    setup_git_remote "$current_folder" "$currentGitHostUserPath" || return $?
-    create_git_tag || return $?
+    execute "git commit -m 'Initial commit'" \
+        "Failed to commit" \
+        "Files committed" || return $?
 
     return 0
 }
-
-# Execute directly if script is not being sourced
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    setup_git_project
-    exit_code=$?
-    successMessages
-    exit $exit_code
-fi

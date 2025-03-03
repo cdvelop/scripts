@@ -20,7 +20,7 @@ tag_version=$(git describe --tags --abbrev=0)
 # volver a la ruta
 cd "$current_dir"
 
-execute "go get $repository/$1@$tag_version" "al obtener paquete $pkg_name" "$pkg_name actualizado ok"
+execute "go get $currentGitHostUserPath/$1@$tag_version" "al obtener paquete $pkg_name" "$pkg_name actualizado ok"
 
 execute "go mod tidy" "go mod tidy ha fallado" "go mod tidy ok"
 

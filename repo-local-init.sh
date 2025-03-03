@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./git-utils.sh
+source git-utils.sh
 
 setup_new_project() {
     local current_folder=$(basename "$(pwd)")

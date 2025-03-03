@@ -25,9 +25,9 @@ getLatestVersion() {
 # Recorrer el archivo go.mod y comparar las versiones de los paquetes
 while IFS= read -r line; do
 
-   if [[ $line =~ (require[[:space:]]+)?($repository/.+)[[:space:]]+([^[:space:]]+) ]]; then
-    package_name=$(gawk -v repository="$repository" 'match($0, repository"/([^[:space:]]+)", arr) {print arr[1]}' <<< "$line")
-    current_tag=$(gawk -v repository="$repository" 'match($0, repository"/([^[:space:]]+) v?([0-9]+\\.[0-9]+\\.[0-9]+)", arr) {print arr[2]}' <<< "$line")
+   if [[ $line =~ (require[[:space:]]+)?($currentGitHostUserPath/.+)[[:space:]]+([^[:space:]]+) ]]; then
+    package_name=$(gawk -v repository="$currentGitHostUserPath" 'match($0, repository"/([^[:space:]]+)", arr) {print arr[1]}' <<< "$line")
+    current_tag=$(gawk -v repository="$currentGitHostUserPath" 'match($0, repository"/([^[:space:]]+) v?([0-9]+\\.[0-9]+\\.[0-9]+)", arr) {print arr[2]}' <<< "$line")
 
         # package_name current_tag no están vacíos.
         if [[ -n "$package_name" && -n "$current_tag" ]]; then

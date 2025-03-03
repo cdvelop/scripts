@@ -1,10 +1,13 @@
-# repositorio
-repository=$(git config --get remote.origin.url | sed -E 's#(git@|https://)([^:/]+)[/:]([^/]+)/.*#\2/\3#')
+# currentGitHostUserPath expected eg: github.com/your-user
+currentGitHostUserPath=$(git config --get remote.origin.url | sed -E 's#(git@|https://)([^:/]+)[/:]([^/]+)/.*#\2/\3#')
+
+# expected eg: juanin654
+gitHubUser=$(gh api user --jq .login)
 
 # Variable para almacenar los mensajes de éxito
 message=""
 
-# directorio usuario
+# user name expected eg: Juanin
 username=$(whoami)
 # Buscar y actualizar paquetes en el directorio "\Packages\go"
 go_pkgs="/c/Users/$username/Packages/go"

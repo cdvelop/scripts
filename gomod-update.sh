@@ -26,9 +26,9 @@ if [ -d $go_pkgs ]; then
         if [ -f "$go_mod_file" ]; then
           
           # Obtener el nombre del paquete observado
-          observed_pkg_name=$(gawk -v pattern=$repository/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' $go_mod_file)
+          observed_pkg_name=$(gawk -v pattern=$currentGitHostUserPath/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' $go_mod_file)
             
-          old_tag=$(gawk -v package="$pkg_was_updated" -v common="$repository" 'match($0, "^require[[:space:]]+" common "/" package "[[:space:]]+([^[:space:]]+)", tag) {print tag[1]; exit} $1==common "/" package {print $2}' "$go_mod_file")
+          old_tag=$(gawk -v package="$pkg_was_updated" -v common="$currentGitHostUserPath" 'match($0, "^require[[:space:]]+" common "/" package "[[:space:]]+([^[:space:]]+)", tag) {print tag[1]; exit} $1==common "/" package {print $2}' "$go_mod_file")
 
             # Verificar si la variable old_tag no está vacía
             if [ -z "$old_tag" ]; then
@@ -41,7 +41,7 @@ if [ -d $go_pkgs ]; then
               cd "$observed_pkg"
                 
                 # actualizamos solo el paquete que cambio
-                execute "go get $repository/$pkg_was_updated@$pkg_tag_was_update" "no se actualizo paquete $pkg_was_updated en $observed_pkg_name" 
+                execute "go get $currentGitHostUserPath/$pkg_was_updated@$pkg_tag_was_update" "no se actualizo paquete $pkg_was_updated en $observed_pkg_name" 
                 
                 # actualizamos el resto de paquetes go
                 execute "go get -u all" "no se pudieron actualizar los paquetes en $observed_pkg_name"      

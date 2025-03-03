@@ -15,7 +15,7 @@ if [ $? -eq 0 ]; then # Verificar si es 0
     latest_tag=$(git describe --abbrev=0 --tags) # Obtén la última etiqueta
     
     #obtenemos el nombre del modulo go
-    go_mod_name=$(gawk -v pattern=$repository/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' go.mod)
+    go_mod_name=$(gawk -v pattern=$currentGitHostUserPath/ 'NR==1 && match($0, pattern "([^/]+)", arr) { print arr[1] }' go.mod)
   
     bash gomod-update.sh "$go_mod_name" "$latest_tag"
     if [ $? -eq 0 ]; then # si es 0 realizamos backup
